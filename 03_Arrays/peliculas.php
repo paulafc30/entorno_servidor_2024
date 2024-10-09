@@ -30,37 +30,73 @@
      *      3. TITULO (TODO ALFABETICAMENTE, Y EL AÑO DE MÁS RECIENTE A MÁS ANTIGUO)
      * */ 
 
+     for($i = 0; $i < count($peliculas); $i++){
+        $peliculas[$i][3] = rand(30,240);
+    }
+    for($i = 0; $i < count($peliculas); $i++){
+       
+        if($peliculas[$i][3] < 60){
+            $peliculas[$i][4]="CORTOMETRAJE";
+        }else{
+            $peliculas[$i][4]="LARGOMETRAJE";
+        }
+    } 
     
-    
+
+    $_tipo = array_column($peliculas, 1);
+    $_anio = array_column($peliculas, 2);
+    $_titulo = array_column($peliculas, 0);
+    array_multisort($_tipo, SORT_ASC, 
+                    $_anio, SORT_DESC,
+                    $_titulo, SORT_ASC,
+                    $peliculas);
     ?>
-
-    <table border="1">
-        <thead>
+    <table>
+    <thead>
+        <tr>
+            <td>Titulo</td>
+            <td>Tipo</td>
+            <td>Año</td>
+            <td>Duración</td>
+            <td>Que es</td>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+        foreach($peliculas as $pelicula){
+            list($nombre, $tipo, $anio, $duracion, $quees) = $pelicula;
+            echo "<tr>";
+            echo "<td>$nombre</td>";
+            echo "<td>$tipo</td>";
+            echo "<td>$anio</td>";
+            echo "<td>$duracion</td>";
+            echo "<td>$quees</td>";
+            echo "</tr>";
+        }
+        ?>
+    </tbody>
+    </table>
+    <br><br><br>
+    <table>
+    <thead>
+        <tr>
+            <td>Titulo</td>
+            <td>Tipo</td>
+            <td>Año</td>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+        foreach($peliculas as $pelicula){
+            list($nombre, $tipo, $anio) = $pelicula;?>
             <tr>
-                <th>Película</th>
-                <th>Categoria</th>
-                <th>Año</th>
+            <td><?php echo $nombre ?></td>
+            <td><?php echo $tipo ?></td>
+            <td><?php echo $anio ?></td>
             </tr>
-        </thead>
-        <tbody>
-            <?php
-            foreach($peliculas as $pelicula){
-                list($titulo,$genero,$anio,$duracion) = $pelicula;
-                echo "<tr>";
-                echo "<td>$titulo</td>";
-                echo "<td>$genero</td>";
-                echo "<td>$anio</td>";
-                echo "<td>";
-                $duracion = rand(30,240);
-                echo "</td>";
-                echo "</tr>";
-            }
-
-            ?>
-            <tr>
-                <td></td>
-            </tr>
-        </tbody>
+       <?php } 
+        ?>
+    </tbody>
     </table>
 </body>
 </html>
