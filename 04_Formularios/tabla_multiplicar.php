@@ -15,9 +15,10 @@
     2 x 2 = 4
     ...
     -->
-    <form action="" method="post">
-        <input type="text" name="numero">
-        <input type="submit" value="Imprimir">
+    <form action="" method="post"><!--Si escribes mal esto hace un GET-->
+        <label for="numero">Número</label>
+        <input type="text" name="numero"><!--Siempre va a devolver en string-->
+        <input type="submit" value="Imprimir"> 
     </form>
     <table border="1">
         <thead>
@@ -26,10 +27,10 @@
         </thead>
         <tbody>  
             <?php 
-            if($_SERVER["REQUEST_METHOD"] == "POST"){
-                $numero = $_POST["numero"];
+            if($_SERVER["REQUEST_METHOD"] == "POST"){ //$_SERVER es un array
+                $numero = (int)$_POST["numero"]; //NO es necesario porque hace un cast implicito
                 $resultado = 0;
-            for($i = 0 ; $i <= 10; $i++){
+            for($i = 1 ; $i <= 10; $i++){
                 $resultado = $numero * $i;
                 echo"<tr>";
                 echo "<td>$numero x $i</td>";
