@@ -3,32 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edades</title>
+    <title>Document</title>
 </head>
 <body>
-    <!--
-    CREAR UN FORMULARIO QUE RECIBA EL NOMBRE Y LA EDAD DE UNA PERSONA
-    SI LA EDAD ES MENOR QUE 18, SE MOSTRARÁ EL NOMBRE Y QUE ES MENOR DE EDAD
-    SI LA EDAD ESTA ENTRE 18 Y 65, SE MOSTRARA EL NOMBRE Y QUE ES MAYOR DE EDAD
-    SI LA EDAD ES MAS DE 65, SE MOSTRARA EL NOMBRE Y QUE SE HA JUBILADO
-    -->
+<!--
+    CREAR UN FORMULARIO QUE RECIBA EL NOMBRE Y EDAD DE UNA PERSONA
 
+    SI LA EDAD ES MENOR QUE 18, SE MOSTRARÁ EL NOMBRE
+
+    SI LA EDAD ESTÁ ENTRE 18 Y 65, SE MOSTRARÁ EL NOMBRE Y QUE ES MAYOR DE EDAD
+
+    SI LA EDAD ES MAS DE 65, SE MOSTRARÁ EL NOMBRE Y QUE SE HA JUBILADO
+
+    -->
     <form action="" method="post">
-        <input type="text" name="nombre" placeholder="Introduzca el nombre">
-        <input type="text" name="edad" placeholder="Introduzca la edad">
-        <input type="submit" value="Enviar">
+        <label>Nombre</label>
+        <input type="text" name="nombre">
+        <label>Edad</label>
+        <input type="text" name="edad">
+        <input type="submit" value="estado">
     </form>
     <?php 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $nombre = $_POST["nombre"];
         $edad = $_POST["edad"];
-        if($edad < 18){
-            echo "<h2>El nombre es $nombre y la edad es $edad</h2>";
-        }elseif ($edad < 66 and $edad > 17) {
-            echo "<h2>El nombre es $nombre y la edad es $edad</h2>";
-        }else {
-            echo "<h2>El nombre es $nombre y la edad es $edad</h2>";
-        }     
+        
+        /*if($edad < 18){
+            echo "<h1>$nombre es menor de edad</h1>";
+        }
+        if($edad >= 18 && $edad < 65){
+            echo "<h1>$nombre es mayor de edad</h1>";
+        }
+        if($edad >= 65){
+            echo "<h1>$nombre se ha jubilado</h1>";
+        }*/
+        $resultado = match(true){
+            $edad < 18 => "es menor de edad",
+            $edad > 18 and $edad < 65 => "es mayor de edad",
+            $edad > 65 => "se ha jubilado",
+        };
+
+        echo "<h1>$nombre $resultado</h1>";
     }
     ?>
 </body>
