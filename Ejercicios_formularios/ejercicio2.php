@@ -7,22 +7,54 @@
 </head>
 <body>
     <!--EJERCICIO 2: Realiza un formulario que reciba 3 números: a, b y c. Se mostrarán en una lista los múltiplos de c 
-que se encuentren entre a y b.
+    que se encuentren entre a y b.
 
-Por ejemplo, si a = 3, b = 10, c = 2
+    Por ejemplo, si a = 3, b = 10, c = 2
 
-Los múltiplos de 2 entre 3 y 10 son: 4, 6, 8 y 10
+    Los múltiplos de 2 entre 3 y 10 son: 4, 6, 8 y 10
+    -->
 
-EJERCICIO 3: Realiza un formulario que reciba dos números y devuelva todos los números primos dentro de ese rango 
-(incluidos los extremos).
+    <form action="" method="post">
+        <label for="numero">Introduce un numero</label> 
+        <input type="number" id="numero" name="numero">
+        <br>
+        <label for="minimo">Introduce el numero minimo del intervalo</label> 
+        <input type="number" id="minimo" name="minimo">
+        <br>
+        <label for="maximo">Introduce el numero maximo del intervalo</label> 
+        <input type="number" id="maximo" name="maximo">
+        <br><br>
+        <input type="submit" value="Calcular múltiplos">
+        <br><br>
+    </form>
+    <?php
+        if($_SERVER["REQUEST_METHOD"] == "POST"){
+            $numero = $_POST["numero"];
+            $minimo = $_POST["minimo"];
+            $maximo = $_POST["maximo"];
 
-EJERCICIO 4: Realiza un formulario que funcione a modo de conversor de temperaturas. Se introducirá en un campo de 
-texto la temperatura, y luego tendremos un select para elegir las unidades de dicha temperatura, y otro select para 
-elegir las unidades a las que queremos convertir la temperatura.
+            $multiplos = array();
 
-Por ejemplo, podemos introducir "10", y seleccionar "CELSIUS", y luego "FAHRENHEIT". Se convertirán los 10 CELSIUS a 
-su equivalente en FAHRENHEIT.
--->
+            for($i = $minimo; $i < $maximo; $i++){
+                if($i % $numero == 0){
+                    array_push($multiplos,$i);
+                }
+            }
+           
+            if (count($multiplos) > 0) {
+
+                echo "<h2>Los múltiplos de $numero en el intervalo [$minimo,$maximo] son:</h2>";
+                echo "<ul>";
+                for($i = 0; $i < count($multiplos); $i++){
+                    echo "<li>" . $multiplos[$i] . "</li>"; 
+                }
+                echo "</ul>";
+
+            }else{
+                echo "<h2>No hay multiplos en ese intervalo</h2>";
+            }
+        }
+    ?>
 
 </body>
 </html>
