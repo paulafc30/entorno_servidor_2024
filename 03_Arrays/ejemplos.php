@@ -52,7 +52,7 @@
         array_push($animales,"Morsa","Foca");//Añadir valores sin clave
         $animales[] = "Ganso";
         print_r($animales);
-        unset($animales[1]);
+        unset($animales[1]); // Borrar
 
         echo "<br><br>";
         print_r($animales);
