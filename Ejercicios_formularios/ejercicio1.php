@@ -28,18 +28,11 @@
             $numero3 = $_POST["numero3"];
             $mayor = $numero1;
 
-            if($numero1 > $numero2){
-                if($numero1 > $numero3){
-                    $mayor = $numero1;
-                }
-            }elseif($numero2 > $numero1){
-                if($numero2 > $numero3){
-                    $mayor = $numero2;
-                }
-            }elseif($numero3 > $numero1){
-                if($numero3 > $numero2){
-                    $mayor = $numero3;
-                }
+            if($mayor > $numero2){
+                $mayor = $numero2;
+            }
+            if($numero3 > $mayor){
+                $mayor = $numero3;
             }
 
             echo "<h2>El mayor es $mayor</h2>";
