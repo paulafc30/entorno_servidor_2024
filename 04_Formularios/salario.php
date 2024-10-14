@@ -20,23 +20,31 @@
     <?php 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $bruto = $_POST["bruto"];
-        $neto = $_POST["neto"];
+        $neto = 0;
 
-        if($bruto < 12450){
-            $neto -= ($bruto * 0.19);
-        }elseif($bruto > 12450 && $bruto < 20199){
-            $neto -= ($bruto * 0.24);
-        }elseif($bruto > 20199 && $bruto < 35199 ){
-            $neto -= ($bruto * 0.30);
-        }elseif($bruto > 35199 && $bruto < 59999){
-            $neto -= ($bruto * 0.37);
-        }elseif($bruto > 59999 && $bruto < 299999){
-            $neto -= ($bruto * 0.45);
-        }elseif($bruto > 299999 && $bruto < 300000){
-            $neto -= ($bruto * 0.47);
+        $tramo1 = $bruto * 0.19;
+        $tramo2 = $bruto * 0.24;
+        $tramo3 = $bruto * 0.30;
+        $tramo4 = $bruto * 0.37;
+        $tramo5 = $bruto * 0.45;
+        $tramo6 = $bruto * 0.47;
+
+
+        if($bruto <= 12450){
+            $neto = $bruto - $tramo1;
+        }elseif($bruto > 12450 && $bruto <= 20199){
+            $neto = $bruto - $tramo1 - $tramo2;
+        }elseif($bruto > 20199 && $bruto <= 35199 ){
+            $neto = $bruto - $tramo1 - $tramo2 - $tramo3;
+        }elseif($bruto > 35199 && $bruto <= 59999){
+            $neto = $bruto - $tramo1 - $tramo2 - $tramo3 - $tramo4;
+        }elseif($bruto > 59999 && $bruto <= 299999){
+            $neto = $bruto - ($tramo1 + $tramo2 + $tramo3 + $tramo4 + $tramo5);
+        }elseif($bruto > 299999 && $bruto <= 300000){
+            $neto = $bruto - $tramo1 - $tramo2 - $tramo3 - $tramo4 - $tramo5 - $tramo6;
         }
-        
-        echo "<p> El sueldo neto es: $neto</p>";
+
+        echo "<h2> El sueldo neto es: $neto</h2>";
     }
     ?>
     
