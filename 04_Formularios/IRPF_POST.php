@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <?php
-        error_reporting( E_ALL );
-        ini_set("display_errors", 1 );    
+        error_reporting(E_ALL);
+        ini_set("display_errors", 1);    
 
         require('../05_funciones/IRPF.php');
     ?>
@@ -17,40 +17,46 @@
         }
     </style>
 </head>
-<body>
-    <form action="" method="post">
-        <input type="number" name="salario" placeholder="Salario">
-        <input type="submit" value="Calcular salario bruto">
-    </form>
-    
-    <?php
-    if($_SERVER["REQUEST_METHOD"] == "POST") {
-        $tmp_salario = $_POST["salario"];
+<body> 
+    <?php 
+        $salario = null; // Inicializamos la variable salario para usarla después
 
-       
-        if($tmp_salario == '') {
-            $err_salario = "El salario es obligatorio";
-        } else {
-            if(filter_var($tmp_precio, FILTER_VALIDATE_FLOAT) === FALSE) {
-                $err_salario = "El salario debe ser un número";
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (isset($_POST["salario"])) {
+                $tmp_salario = $_POST["salario"];
             } else {
-                if($tmp_salario < 0) {
-                    $err_precio = "El precio debe ser mayor o igual que cero";
+                $tmp_salario = '';
+            }
+
+            if ($tmp_salario != '') {
+                if (filter_var($tmp_salario, FILTER_VALIDATE_FLOAT) !== false) {
+                    if ($tmp_salario >= 0) {
+                        $salario = $tmp_salario;
+                    } else {
+                        $err_salario = "El salario debe ser mayor o igual que cero";
+                    }
                 } else {
-                    $salario = $tmp_salario;
+                    $err_salario = "El salario debe ser un número";
                 }
+            } else {
+                $err_salario = "El salario es obligatorio";
             }
         }
-
-       
-    }
     ?>
 
+    <form action="" method="post">
+        <input type="number" name="salario" placeholder="Salario">
+        <?php
+            if (isset($err_salario)) echo "<span class='error'>$err_salario</span>";
+        ?>
+        <input type="submit" value="Calcular salario bruto">
+    </form>
+
     <?php
-        if(isset($salario)) {
-            echo "<h1>El salario es " . CalcularIRPF($salario) . "</h1>";
+        if (isset($salario) && $salario !== null) {
+            $resultado = CalcularIRPF($salario);
+            echo "<h1>El salario final después del IRPF es $resultado</h1>";
         }
     ?>
 </body>
 </html>
-

@@ -1,4 +1,11 @@
 <?php
+    
+    define("TRAMO1", (12450 * 0.19));
+    define("TRAMO2", (7749 * 0.24));
+    define("TRAMO3", (15000 * 0.3));
+    define("TRAMO4", (24800 * 0.37));
+    define("TRAMO5", (240000 * 0.45));
+    
     function CalcularIRPF($salario){
         $salario_final = null;
             
@@ -41,8 +48,8 @@
                     - $tramo5
                     - (($salario - 300000) * 0.47);
             }
-
+            return $salario_final;
     }
 
-    return $salario_final;
+ 
 ?>
