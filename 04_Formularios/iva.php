@@ -50,6 +50,7 @@
         }
     }
     ?>
+    
     <form action="" method="post">
         <label for="precio">Precio</label>
         <input type="text" name="precio" id="precio">
