@@ -6,7 +6,7 @@
     define("TRAMO4", (24800 * 0.37));
     define("TRAMO5", (240000 * 0.45));
     
-    function CalcularIRPF($salario){
+    function CalcularIRPF(int|float $salario):float{
         $salario_final = null;
             
             $tramo1 = (12450 * 0.19);
