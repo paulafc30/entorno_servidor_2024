@@ -67,7 +67,7 @@
         echo "<h3>Array2:</h3>";
         $media2 = 0;
         $mayor2 = 1;
-        $menor2 = 1000;
+        $menor2 = 1000; // mejor poner array[0]
         for($i = 0; $i < count($array2); $i++){
             $media2 = $array2[$i] + $i;
             if($mayor2 < $array2[$i]){
