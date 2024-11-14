@@ -1,23 +1,13 @@
-<!--Malaga C.F
-Equipos de la liga
-- Nombre (letras con tilde, ñ, espacios en blanco y punto)
-- Inicial (3 letras)
-- Liga (select con las opciones. Liga EA Sports, Liga Hypermotion, Liga Primera RFEF)
-- Ciudad (letras con tilde, ñ, ç y espacios en blanco)
-- Tiene nombre liga (select con si o no)
-- Fecha de fundacion (entre hoy y el 18 de diciembre de 1889)
-- Numero de jugadores (entre 22 y 32)
--->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futbol</title>
+    <title>Document</title>
     <?php
         error_reporting( E_ALL );
         ini_set("display_errors", 1 );  
-        require('../04_Formularios/depurar.php');
+        require('../05_funciones/depurar.php');
     ?>
     <style>
         .error {
@@ -26,99 +16,126 @@ Equipos de la liga
     </style>
 </head>
 <body>
-    <?php
-        if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $tmp_nombre = $_POST["nombre"];
-            $tmp_inicial = $_POST["inicial"];
-            $tmp_liga = $_POST["liga"];
-            $tmp_ciudad = $_POST["ciudad"];
-            $tmp_titulos = $_POST["titulos"];
-            $tmp_fecha = $_POST["fecha"];
-            $tmp_jugadores = $_POST["jugadores"];
+<!--
+    Equipos de la liga
 
-            if($tmp_nombre == '') {
-                $err_nombre = "El nombre es obligatorio";
+    - Nombre (letra con tilde, ñ, espacios en blanco y punto)
+    - Inicial (3 letras)
+    - Liga (select con las opciones: Liga EA Sports, Liga Hypermotion, Liga Primera RFEF)
+    - Cuidad (letra con tilde, ñ, ç y espacios en blanco)
+    - Tiene titulo de liga (select si o no)
+    - Fecha de fundacion (entre hoy y el 18 de diciembre de 1889)
+    - Numero de juegadores (entre 19 y 32)
+    - 
+-->
+    <?php 
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        $tmp_nombre = depurar($_POST["nombre"]);
+        $tmp_inicial = depurar($_POST["inicial"]);
+        $tmp_liga = depurar($_POST["liga"]);
+        $tmp_ciudad = depurar($_POST["cuidad"]);
+        //$tmp_titulo = depurar($_POST["titulo"]);
+        $tmp_fecha_fundacion = depurar($_POST["fecha_fundacion"]);
+        $tmp_numero_jugadores = depurar($_POST["numero_jugadores"]);
+
+        if($tmp_nombre == ''){
+            $err_titulo = "El titulo es un campo OBLIGATORIO";
+        }else{
+            if(strlen($tmp_titulo) < 3 || strlen($tmp_titulo) > 20) {
+                $err_nombre = "El nombre debe tener entre 3 y 20 caracteres";
             } else {
-                $patron = "/^[a-zA-Z0-9_\-.+]+@([a-zA-Z0-9-]+.)+[a-zA-Z]+$/";
-                if(!preg_match($patron, $tmp_correo)) {
-                    $err_nombre = "El correo no es válido";
+                $patron = "/^[a-zA-ZáéíóúñÁÉÍÓÚÑ .]$/";
+                if(!preg_match($patron, $tmp_nombre)) {
+                    $err_nombre = "El nombre solo puede contener letras, puntos o espacio";
                 } else {
-                    $palabras_baneadas = ["caca","peo","recorcholis","caracoles","repampanos"];
+                    $nombre = $tmp_nombre;
+                } 
+            } 
+        }
 
-                    $palabras_encontradas = "";
-                    foreach($palabras_baneadas as $palabra_baneada) {
-                        if(str_contains($tmp_correo,$palabra_baneada)) {
-                            $palabras_encontradas = "$palabra_baneada, " . $palabras_encontradas;
-                        }
-                        if($palabras_encontradas != '') {
-                            $err_correo = "No se permiten las palabras: $palabras_encontradas";
-                        } else {
-                            $correo = $tmp_correo;
-                        }
-                    }
+        if($tmp_inicial == ''){
+            $err_inicial = "La iniciales son obligatorias";
+        }else{
+            if(strlen($tmp_titulo) < 2 || strlen($tmp_titulo) > 4){
+                $err_inicial = "Las iniciales deben contener obligatoriamente 3 letras";
+            }else{
+                $patron = "/^[a-zA-Z]+$/";
+                if(!preg_match($patron, $tmp_inicial)){
+                    $err_inicial = "Solo puede contener 3 letras";
+                }else{
+                    $inicial = $tmp_inicial;
                 }
             }
         }
+
+        if (isset($_POST['titulo'])) { 
+            $tmp_titulo = depurar($_POST['titulo']); 
+        } else { 
+            $tmp_titulo = "";
+        }
+
+        if($tmp_titulo == ''){
+            $err_titulo = "La titulo es obligatoria";
+        }else{
+            $titulo_validos = ["si", "no"];
+            if(!in_array($tmp_titulo, $titulo_validos)){
+                $err_titulo = "El titulo no es valido";
+            }else{
+                $titulo = $tmp_titulo;
+            }
+        }
+
+        if($tmp_numero_jugadores == ''){
+            $err_numero_jugadores = "EL numero es obligatorio";
+            if(filter_var($tmp_numero_jugadores, FILTER_VALIDATE_INT) == FALSE){
+                $err_numero_jugadores = "El numero de jugadores debe ser un numero";
+            }else{
+                if($tmp_numero_jugadores < 19 || $tmp_numero_jugadores > 32){
+                    $err_numero_jugadores = "El numero de jugadores debe ser entre 19 y 32";
+                }
+            }
+        }
+
+    }
+    
     ?>
-    <div class="container">
 
-        <h1>Formulario de futbol</h1>
-
-        <form class="col-4" action="" method="post">
-            <div class="mb-3">
-                <label class="form-label">Nombre:</label>
-                <input class="form-control" type="text" name="nombre">
-                <?php if(isset($err_nombre)) echo "<span class='error'>$err_nombre</span>" ?>
-            </div> <br>
-
-            <div class="mb-3">
-                <label class="form-label">Inicial:</label>
-                <input class="form-control" type="text" name="inicial">
-                <?php if(isset($err_inicial)) echo "<span class='error'>$err_inicial</span>" ?>
-            </div> <br>
-
-            <div class="mb-3">
-                <label class="form-label">Liga:</label>
-                <select name="liga">
-                    <option value="ligaea">Liga EA Sports</option>
-                    <option value="ligahyper">Liga Hypermotion</option>
-                    <option value="ligaprimera">Liga Primera RFEF</option>
-                </select>
-                <?php if(isset($err_liga)) echo "<span class='error'>$err_liga</span>" ?>
-            </div> <br>
-
-            <div class="mb-3">
-                <label class="form-label">Ciudad:</label>
-                <input class="form-control" type="text" name="ciudad">
-                <?php if(isset($err_ciudad)) echo "<span class='error'>$err_ciudad</span>" ?>
-            </div> <br>
-
-            <div class="mb-3">
-                <label class="form-label">Tiene nombres?:</label>
-                <select name="nombres_liga">
-                    <option value="si">Si</option>
-                    <option value="no">No</option>
-                </select>
-                <?php if(isset($err_titulos)) echo "<span class='error'>$err_titulos</span>" ?>
-            </div> <br>
-
-            <div class="mb-3">
-                <label class="form-label">Fecha de fundacion:</label>
-                <input class="form-control" type="date" name="fecha">
-                <?php if(isset($err_fecha)) echo "<span class='error'>$err_fecha</span>" ?>
-            </div> <br>
-
-            <div class="mb-3">
-                <label class="form-label">Numero jugadores:</label>
-                <input class="form-control" type="text" name="jugadores">
-                <?php if(isset($err_jugadores)) echo "<span class='error'>$err_jugadores</span>" ?>
-            </div> <br>
-
-            <div class="mb-3">
-                <input class="btn btn-primary" type="submit" value="Enviar">
-            </div>
-        </form>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <form action="" method="post">
+        <div>
+            <label>Nombre: </label>
+            <input type="text" name="nombre">
+        </div>
+        <div>
+            <label>Inicial: </label>
+            <input type="text" name="inicial">
+        </div>
+        <div>
+            <label>Liga: </label>
+            <select name="liga"> 
+                <option value="LigaEASports">Liga EA Sports</option> 
+                <option value="LigaHypermotion">Liga Hypermotion</option> 
+                <option value="LigaPrimeraRFEF">Liga Primera RFEF</option> 
+            </select>
+        </div>
+        <div>
+            <label>Ciudad: </label>
+            <input type="text" name="ciudad">
+        </div>
+        <div>
+            <label>Titulo de Liga: </label>
+            <select name="titulo"> 
+                <option value="si">Si</option> 
+                <option value="no">No</option> 
+            </select>
+        </div>
+        <div>
+            <label>Fecha de fundación</label>
+            <input type="date" name="fecha_fundacion">
+        </div>
+        <div>
+            <label>Numero de Juegadores</label>
+            <input type="text" name="numero_jugadores">
+        </div>
+    </form>
 </body>
 </html>
