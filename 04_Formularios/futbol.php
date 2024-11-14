@@ -66,7 +66,7 @@ Equipos de la liga
 
         <form class="col-4" action="" method="post">
             <div class="mb-3">
-                <label class="form-label">nombre:</label>
+                <label class="form-label">Nombre:</label>
                 <input class="form-control" type="text" name="nombre">
                 <?php if(isset($err_nombre)) echo "<span class='error'>$err_nombre</span>" ?>
             </div> <br>
