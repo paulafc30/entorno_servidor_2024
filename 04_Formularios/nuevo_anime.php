@@ -9,6 +9,7 @@
         error_reporting( E_ALL );
         ini_set("display_errors", 1 );  
         require('../05_funciones/depurar.php');
+        require 'conexion.php';
     ?>
     <style>
         .error {
@@ -25,9 +26,13 @@ num_temporadas: Es obligatorio y será un valor numérico entre 1 y 99. -->
 <?php
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $tmp_titulo = depurar($_POST["titulo"]);
-        $tmp_nombre = depurar($_POST["nombre"]);
+        $tmp_nombre_estudio = depurar($_POST["nombre_estudio"]);
         $tmp_anio = depurar($_POST["anio"]);
         $tmp_num_temporadas = depurar($_POST["num_temporadas"]);
+
+        $sql = "INSERT INTO animes (titulo, nombre_estudio, anio, num_temporadas) 
+                    VALUES ('$titulo', '$nombre_estudio', $anio, $num_temporadas)";
+        $_conexion -> query($sql);
 
         if($tmp_titulo == '') {
             $err_titulo = "El titulo es obligatorio";
@@ -39,10 +44,10 @@ num_temporadas: Es obligatorio y será un valor numérico entre 1 y 99. -->
             }
         }
 
-        if($tmp_nombre == ''){
-            $err_nombre = "El nombre es obligatorio";
+        if($tmp_nombre_estudio == ''){
+            $err_nombre_estudio = "El nombre es obligatorio";
         }else{
-            $nombre = $tmp_nombre;
+            $nombre_estudio = $tmp_nombre_estudio;
         }
 
         if(isset($_POST['anio'])){
@@ -62,7 +67,7 @@ num_temporadas: Es obligatorio y será un valor numérico entre 1 y 99. -->
         if($tmp_num_temporadas == ''){
             $err_num_temporadas = "El número de temporadas es obligatorio";
         }else{
-            if(is_numeric($tmp_num_temporadas)){
+            if(!filter_var($tmp_num_temporada, FILTER_VALIDATE_INT)){
                 if( $tmp_num_temporadas >= 1 &&  $tmp_num_temporadas <= 99){
                     $num_temporadas = $tmp_num_temporadas;
                 }else{
@@ -85,7 +90,7 @@ num_temporadas: Es obligatorio y será un valor numérico entre 1 y 99. -->
             </div>
             <div class="mb-3">
                 <label class="form-label">Nombre Estudio: </label>
-                <select class="form-select" aria-label="Default select example" name="nombre">
+                <select class="form-select" aria-label="Default select example" name="nombre_estudio">
                     <!--<option selected>Open this select menu</option>-->
                     <?php 
                         $estudios = ["Kyoto Animation", "Diomedéa", "Studio Deen", "Mappa", "Studio Ghibli"];
@@ -94,7 +99,7 @@ num_temporadas: Es obligatorio y será un valor numérico entre 1 y 99. -->
                             
                     <?php  } ?>
                 </select>
-                <?php if(isset($err_nombre)) echo "<span class='error'>$err_nombre</span>" ?>
+                <?php if(isset($err_nombre_estudio)) echo "<span class='error'>$err_nombre_estudio</span>" ?>
             </div>      
             <div class="mb-3">
                 <label class="form-label">Año de estreno: </label>
@@ -107,7 +112,7 @@ num_temporadas: Es obligatorio y será un valor numérico entre 1 y 99. -->
                 <?php if(isset($err_num_temporadas)) echo "<span class='error'>$err_num_temporadas</span>" ?>
             </div>
             <div class="mb-3">
-                <input class="btn btn-primary" type="submit" value="Enviar">
+                <input class="btn btn-primary" type="submit" value="Insertar">
             </div>
         </form>
     </div>

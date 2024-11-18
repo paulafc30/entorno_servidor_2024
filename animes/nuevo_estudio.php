@@ -8,7 +8,7 @@
     <?php
         error_reporting( E_ALL );
         ini_set("display_errors", 1 );  
-        require('../05_funciones/depurar.php');
+        //require('../05_funciones/depurar.php');
     ?>
     <style>
         .error {
@@ -16,39 +16,19 @@
         }
     </style>
 </head>
-<!--El formulario de los estudios lo crearemos en un fichero llamado “nuevo_estudio.php” y tendrá los siguientes campos:
-nombre_estudio: Es obligatorio y solo podrá contener letras, números y espacios en blanco.
-ciudad: Es obligatorio y solo podrá contener letras y espacios en blanco.-->
 <body>
     <?php
-        if($_SERVER["REQUEST_METHOD"] == "POST"){
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
             $tmp_nombre_estudio = depurar($_POST["nombre_estudio"]);
             $tmp_ciudad = depurar($_POST["ciudad"]);
 
-            if($tmp_nombre_estudio == ''){
-                $err_nombre_estudio = "El nombre es obligatorio";
-            }else{
-                $patron = "/^[a-zA-Z0-9 áéíóúÁÉÍÓÚÑñ]*$/";
-                if(!preg_match($patron, $tmp_nombre_estudio)) {
-                    $err_nombre_estudio = "Solo puede contener letras, números y espacios en blanco";
-                } else {
-                    $nombre_estudio = $tmp_nombre_estudio;
-                }             
-            }
+            // SI DA SYCTAX ERROR ES QUE ESTE SQL ESTA MAL
+            $sql = "INSERT INTO animes (nombre_estudio, ciudad) 
+                VALUES ('$nombre_estudio', '$ciudad')";
 
-            if($tmp_ciudad == ''){
-                $err_ciudad = "La ciudad es obligatoria";
-            }else{
-                $patron = "/^[a-zA-Z áéíóúÁÉÍÓÚÑñ]*$/";
-                if(!preg_match($patron, $tmp_ciudad)) {
-                    $err_ciudad = "Solo puede contener letras y espacios en blanco";
-                } else {
-                    $ciudad = $tmp_ciudad;
-                }             
-            }
+            $_conexion -> query($sql);
         }
     ?>
-
 <div class="container">
         <h1>Formulario estudios</h1>
         <form class="col-4" action="" method="post">
