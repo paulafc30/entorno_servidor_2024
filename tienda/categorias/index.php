@@ -3,20 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index de Productos</title>
+    <title>Index de Categorias</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <?php
         error_reporting( E_ALL );
         ini_set("display_errors", 1 );    
 
-        require('conexion.php');
+        require('../util/conexion.php');
+    
     ?>
 </head>
 <body>
     <div class="container">
-    <h1>Tabla de productos</h1>
+    <h1>Tabla de categorias</h1>
     <?php
-        $sql = "SELECT * FROM consolas";
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            $id_categoria = $_POST["id_categoria"];
+            echo "<h1>$id_categoria</h1>";
+            //  borrar 
+            $sql = "DELETE FROM animes WHERE id_categoria = $id_categoria";
+            $_conexion -> query($sql);
+        }
+
+        $sql = "SELECT * FROM categorias";
         $resultado = $_conexion -> query($sql);
         /**
          * Aplicamos la función query a la conexión, donde se ejecuta la sentencia SQL hecha
@@ -26,27 +35,32 @@
          */
     ?>
     <table class="table table-striped table-hover">
+        <div class="mb-3">
+            <a class="btn btn-secondary" href="nueva_categoria.php">Insertar</a><br><br>
+        </div>
         <thead class="table-dark">
             <tr>
-                <th>Fabricante</th>
-                <th>Generacion</th>
-                <th>Nombre</th>
-                <th>Unidades Vendidas</th>
+                <th>Categoria</th>
+                <th>Descripcion</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
+            
             <?php
                 while($fila = $resultado -> fetch_assoc()) {    // trata el resultado como un array asociativo
                     echo "<tr>";
-                    echo "<td>" . $fila["fabricante"] . "</td>";
-                    echo "<td>" . $fila["generacion"] . "</td>";
-                    echo "<td>" . $fila["nombre"] . "</td>";
-                    if( $fila["unidades_vendidas"] === null){
-                        echo "<td>No hay datos</td>";
-                    }else{
-                        echo "<td>" . $fila["unidades_vendidas"] . "</td>";
-                    }
-                    echo "</tr>";
+                    echo "<td>" . $fila["categoria"] . "</td>";
+                    echo "<td>" . $fila["descripcion"] . "</td>";
+                    ?>
+                    <td>
+                        <a class="btn btn-primary" href="editar_categoria.php">Editar</a><br><br> 
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" href="editar_categoria.php">Borrar</a><br><br> 
+                    </td>
+                    <?php echo "</tr>";
                 }
             ?>
         </tbody>

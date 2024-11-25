@@ -16,7 +16,7 @@
     <div class="container">
     <h1>Tabla de productos</h1>
     <?php
-        $sql = "SELECT * FROM consolas";
+        $sql = "SELECT * FROM productos";
         $resultado = $_conexion -> query($sql);
         /**
          * Aplicamos la función query a la conexión, donde se ejecuta la sentencia SQL hecha
@@ -28,24 +28,46 @@
     <table class="table table-striped table-hover">
         <thead class="table-dark">
             <tr>
-                <th>Fabricante</th>
-                <th>Generacion</th>
                 <th>Nombre</th>
-                <th>Unidades Vendidas</th>
+                <th>Precio</th>
+                <th>Categoria</th>
+                <th>Stock</th>
+                <th>Imagen</th>
+                <th>Descripcion</th>
             </tr>
         </thead>
         <tbody>
             <?php
                 while($fila = $resultado -> fetch_assoc()) {    // trata el resultado como un array asociativo
                     echo "<tr>";
-                    echo "<td>" . $fila["fabricante"] . "</td>";
-                    echo "<td>" . $fila["generacion"] . "</td>";
                     echo "<td>" . $fila["nombre"] . "</td>";
+                    echo "<td>" . $fila["precio"] . "</td>";
+                    echo "<td>" . $fila["categoria"] . "</td>";
+                    echo "<td>" . $fila["stock"] . "</td>";
+                    echo "<td>" . $fila["categoria"] . "</td>";
                     if( $fila["unidades_vendidas"] === null){
                         echo "<td>No hay datos</td>";
                     }else{
                         echo "<td>" . $fila["unidades_vendidas"] . "</td>";
                     }
+                    
+                    echo "</tr>";
+                
+            ?>
+                    <td>
+                        <img width="100" height="200" src="<?php echo $fila["imagen"] ?>">
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" 
+                           href="ver_anime.php?id_producto=<?php echo $fila["id_producto"] ?>">Editar</a>
+                    </td>
+                    <td>
+                        <form action="" method="post">
+                            <input type="hidden" name="id_" value="<?php echo $fila["id_producto"] ?>">
+                            <input class="btn btn-danger" type="submit" value="Borrar">
+                        </form>
+                    </td>
+                    <?php
                     echo "</tr>";
                 }
             ?>

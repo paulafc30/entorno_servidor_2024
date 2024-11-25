@@ -10,6 +10,15 @@
         ini_set("display_errors", 1 );    
 
         require('conexion.php');
+
+        session_start();
+        if(isset($_SESSION["usuario"])){
+            echo "<h2>Bienvenid@ ".$_SESSION["usuario"] . "</h2>";
+        }else{
+            // TENER MUCHO CUIDADO. UTILIZAR ANTES DE QUE SE EMPIECEN A EJECUTAR COSAS EN EL BODY
+            header("location: usuario/iniciar_sesion.php");
+            exit;
+        }
     ?>
 </head>
 <body>
@@ -41,7 +50,7 @@
         }
 
         if($_SERVER["REQUEST_METHOD"] == "POST") {
-            $id_anime = $_POST["id_anime"];
+            $id_producto = $_POST["id_producto"];
             $titulo = $_POST["titulo"];
             $nombre_estudio = $_POST["nombre_estudio"];
             $anno_estreno = $_POST["anno_estreno"];
