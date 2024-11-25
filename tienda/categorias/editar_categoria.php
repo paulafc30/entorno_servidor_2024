@@ -18,8 +18,8 @@
         <?php
         //echo "<h1>" . $_GET["id_anime"] . "</h1>";
 
-        $id_categoria = $_GET["id_categoria"];
-        $sql = "SELECT * FROM categorias WHERE id_categoria = $id_categoria";
+        $categoria = $_GET["categoria"];
+        $sql = "SELECT * FROM categorias WHERE categoria = $categoria";
         $resultado = $_conexion -> query($sql);
         
         while($fila = $resultado -> fetch_assoc()) {
@@ -38,14 +38,13 @@
         }
 
         if($_SERVER["REQUEST_METHOD"] == "POST") {
-            $id_categoria = $_POST["id_categoria"];
             $categoria = $_POST["categoria"];
             $descripcion = $_POST["descripcion"];
 
             $sql = "UPDATE categorias SET
                 categoria = '$categoria',
                 descripcion = '$descripcion'
-                WHERE id_categoria = $id_categoria
+                WHERE categoria = $categoria
             ";
             $_conexion -> query($sql);
         }
@@ -60,7 +59,7 @@
                 <input class="form-control" type="text" name="descripcion" value="<?php echo $descripcion ?>">
             </div>
             <div class="mb-3">
-                <input type="hidden" name="id_categoria" value="<?php echo $id_categoria ?>">
+                <input type="hidden" name="categoria" value="<?php echo $categoria ?>">
                 <input class="btn btn-primary" type="submit" value="Confirmar">
                 <a class="btn btn-secondary" href="index.php">Volver</a>
             </div>
