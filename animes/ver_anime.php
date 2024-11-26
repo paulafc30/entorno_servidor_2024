@@ -50,7 +50,7 @@
         }
 
         if($_SERVER["REQUEST_METHOD"] == "POST") {
-            $id_producto = $_POST["id_producto"];
+            $id_anime = $_POST["id_anime"];
             $titulo = $_POST["titulo"];
             $nombre_estudio = $_POST["nombre_estudio"];
             $anno_estreno = $_POST["anno_estreno"];

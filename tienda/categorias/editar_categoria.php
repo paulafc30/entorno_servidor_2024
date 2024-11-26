@@ -18,24 +18,29 @@
         <?php
         //echo "<h1>" . $_GET["id_anime"] . "</h1>";
 
-        $categoria = $_GET["categoria"];
-        $sql = "SELECT * FROM categorias WHERE categoria = $categoria";
-        $resultado = $_conexion -> query($sql);
+        if(isset($_GET["categoria"])){
+            $categoria = $_GET["categoria"];
+            $sql = "SELECT * FROM categorias WHERE categoria = '$categoria'";
+            $resultado = $_conexion -> query($sql);
         
-        while($fila = $resultado -> fetch_assoc()) {
-            $categoria = $fila["categoria"];
-            $descripcion = $fila["descripcion"];
+            while($fila = $resultado -> fetch_assoc()) {
+                $categoria = $fila["categoria"];
+                $descripcion = $fila["descripcion"];
+            }
+        }else{
+            $categoria = "";
+            $descripcion = "";
         }
 
         //echo "<h1>$titulo</h1>";
 
-        $sql = "SELECT * FROM categorias ORDER BY categoria";
+        /*$sql = "SELECT * FROM categorias ORDER BY categoria";
         $resultado = $_conexion -> query($sql);
-        $categorias = [];
+        $array_categorias = [];
 
         while($fila = $resultado -> fetch_assoc()) {
-            array_push($categorias, $fila["categorias"]);
-        }
+            array_push($array_categorias, $fila["categoria"]);
+        }*/
 
         if($_SERVER["REQUEST_METHOD"] == "POST") {
             $categoria = $_POST["categoria"];
@@ -44,7 +49,7 @@
             $sql = "UPDATE categorias SET
                 categoria = '$categoria',
                 descripcion = '$descripcion'
-                WHERE categoria = $categoria
+                WHERE categoria = '$categoria'
             ";
             $_conexion -> query($sql);
         }

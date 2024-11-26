@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
         error_reporting( E_ALL );
         ini_set("display_errors", 1 );    
 
-        require('conexion.php');
+        require('../util/conexion.php');
     ?>
 </head>
 <body>
@@ -34,6 +34,8 @@
                 <th>Stock</th>
                 <th>Imagen</th>
                 <th>Descripcion</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -44,29 +46,25 @@
                     echo "<td>" . $fila["precio"] . "</td>";
                     echo "<td>" . $fila["categoria"] . "</td>";
                     echo "<td>" . $fila["stock"] . "</td>";
-                    echo "<td>" . $fila["categoria"] . "</td>";
-                    if( $fila["unidades_vendidas"] === null){
+                    echo "<td>"  ?> <img width="100" height="200" src="<?php echo $fila["imagen"] ?>"><?php  "</td>";
+                    echo "<td>" . $fila["descripcion"] . "</td>";
+                    /*if( $fila["unidades_vendidas"] === null){
                         echo "<td>No hay datos</td>";
                     }else{
                         echo "<td>" . $fila["unidades_vendidas"] . "</td>";
-                    }
-                    
-                    echo "</tr>";
+                    }*/
                 
-            ?>
-                    <td>
-                        <img width="100" height="200" src="<?php echo $fila["imagen"] ?>">
-                    </td>
-                    <td>
-                        <a class="btn btn-primary" 
-                           href="ver_anime.php?id_producto=<?php echo $fila["id_producto"] ?>">Editar</a>
-                    </td>
-                    <td>
-                        <form action="" method="post">
-                            <input type="hidden" name="id_" value="<?php echo $fila["id_producto"] ?>">
-                            <input class="btn btn-danger" type="submit" value="Borrar">
-                        </form>
-                    </td>
+                    ?>
+                        <td>
+                            <a class="btn btn-primary" 
+                            href="editar_producto.php?id_producto=<?php echo $fila["id_producto"] ?>">Editar</a>
+                        </td>
+                        <td>
+                            <form action="" method="post">
+                                <input type="hidden" name="id_" value="<?php echo $fila["id_producto"] ?>">
+                                <input class="btn btn-danger" type="submit" value="Borrar">
+                            </form>
+                        </td>
                     <?php
                     echo "</tr>";
                 }

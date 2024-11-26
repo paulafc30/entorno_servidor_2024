@@ -10,7 +10,6 @@
         ini_set("display_errors", 1 );    
 
         require('../util/conexion.php');
-    
     ?>
 </head>
 <body>
@@ -18,10 +17,10 @@
     <h1>Tabla de categorias</h1>
     <?php
         if($_SERVER["REQUEST_METHOD"] == "POST") {
-            $id_categoria = $_POST["id_categoria"];
-            echo "<h1>$id_categoria</h1>";
+            $categoria = $_POST["categoria"];
+            echo "<h1>'$categoria'</h1>";
             //  borrar 
-            $sql = "DELETE FROM animes WHERE id_categoria = $id_categoria";
+            $sql = "DELETE FROM categorias WHERE categoria = '$categoria'";
             $_conexion -> query($sql);
         }
 
@@ -55,10 +54,14 @@
                     echo "<td>" . $fila["descripcion"] . "</td>";
                     ?>
                     <td>
-                        <a class="btn btn-primary" href="editar_categoria.php">Editar</a><br><br> 
+                        <a class="btn btn-primary" 
+                               href="editar_categoria.php?categoria=<?php echo $fila["categoria"] ?>">Editar</a>
                     </td>
                     <td>
-                        <a class="btn btn-warning" href="editar_categoria.php">Borrar</a><br><br> 
+                        <form action="" method="post">
+                            <input type="hidden" name="categoria" value="<?php echo $fila["categoria"] ?>">
+                            <input class="btn btn-danger" type="submit" value="Borrar">
+                        </form>
                     </td>
                     <?php echo "</tr>";
                 }
