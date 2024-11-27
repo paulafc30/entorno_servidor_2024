@@ -16,6 +16,16 @@
     <div class="container">
     <h1>Tabla de productos</h1>
     <?php
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            if($id_producto = $_POST["id_producto"]){
+                
+            }
+            echo "<h1>$id_producto</h1>";
+            //  borrar 
+            $sql = "DELETE FROM productos WHERE id_producto = $id_producto";
+            $_conexion -> query($sql);
+        }
+
         $sql = "SELECT * FROM productos";
         $resultado = $_conexion -> query($sql);
         /**
@@ -71,6 +81,9 @@
             ?>
         </tbody>
     </table>
+    <div class="mb-3">
+        <a class="btn btn-secondary" href="nuevo_producto.php">Insertar</a><br><br>
+    </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
