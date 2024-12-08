@@ -10,30 +10,52 @@
         ini_set("display_errors", 1 );    
 
         require('../util/conexion.php');
+
+        session_start();
+        if(isset($_SESSION["usuario"])){
+            echo "<h4>Bienvenid@ ".$_SESSION["usuario"] . "</h4>";
+        }else{
+            header("location: usuario/iniciar_sesion.php");
+            exit;
+        }
     ?>
+
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
     <h1>Tabla de productos</h1>
+    <br>
+    <div class="mb-3">
+        <a class="btn btn-success" href="nuevo_producto.php">Insertar nuevo producto</a>
+        <a class="btn btn-secondary" href="../index.php">Volver a Inicio</a>
+    </div>
     <?php
         if($_SERVER["REQUEST_METHOD"] == "POST") {
-            if($id_producto = $_POST["id_producto"]){
-                
+            $id_producto = $_POST["id_producto"];
+                   
+            $sql_nombre = "SELECT nombre FROM productos WHERE id_producto = $id_producto";
+            $resultado_nombre = $_conexion->query($sql_nombre);
+            $nombre_producto = ''; 
+    
+            if ($resultado_nombre->num_rows > 0) {
+                $fila = $resultado_nombre->fetch_assoc();
+                $nombre_producto = $fila["nombre"];
             }
-            echo "<h1>$id_producto</h1>";
-            //  borrar 
-            $sql = "DELETE FROM productos WHERE id_producto = $id_producto";
-            $_conexion -> query($sql);
+    
+            // borrar 
+            $sql_borrar = "DELETE FROM productos WHERE id_producto = $id_producto";
+            $_conexion->query($sql_borrar);
+            echo "<h4>El producto $nombre_producto ha sido borrado</h4>";
         }
 
         $sql = "SELECT * FROM productos";
         $resultado = $_conexion -> query($sql);
-        /**
-         * Aplicamos la función query a la conexión, donde se ejecuta la sentencia SQL hecha
-         * 
-         * El resultado se almacena $resultado, que es un objeto con una estructura parecida
-         * a los arrays
-         */
+            
     ?>
     <table class="table table-striped table-hover">
         <thead class="table-dark">
@@ -58,11 +80,6 @@
                     echo "<td>" . $fila["stock"] . "</td>";
                     echo "<td>"  ?> <img width="100" height="200" src="<?php echo $fila["imagen"] ?>"><?php  "</td>";
                     echo "<td>" . $fila["descripcion"] . "</td>";
-                    /*if( $fila["unidades_vendidas"] === null){
-                        echo "<td>No hay datos</td>";
-                    }else{
-                        echo "<td>" . $fila["unidades_vendidas"] . "</td>";
-                    }*/
                 
                     ?>
                         <td>
@@ -71,7 +88,7 @@
                         </td>
                         <td>
                             <form action="" method="post">
-                                <input type="hidden" name="id_" value="<?php echo $fila["id_producto"] ?>">
+                                <input type="hidden" name="id_producto" value="<?php echo $fila["id_producto"] ?>">
                                 <input class="btn btn-danger" type="submit" value="Borrar">
                             </form>
                         </td>
@@ -81,10 +98,8 @@
             ?>
         </tbody>
     </table>
-    <div class="mb-3">
-        <a class="btn btn-secondary" href="nuevo_producto.php">Insertar</a><br><br>
-    </div>
+    
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
-</html>
+</html> 
