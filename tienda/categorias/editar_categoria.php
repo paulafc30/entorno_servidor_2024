@@ -10,14 +10,13 @@
         ini_set("display_errors", 1 );    
 
         require('../util/conexion.php');
+        require('../util/depurar.php');
     ?>
 </head>
 <body>
     <div class="container">
         <h1>Editar categoria</h1>
         <?php
-        //echo "<h1>" . $_GET["id_anime"] . "</h1>";
-
         if(isset($_GET["categoria"])){
             $categoria = $_GET["categoria"];
             $sql = "SELECT * FROM categorias WHERE categoria = '$categoria'";
@@ -32,19 +31,20 @@
             $descripcion = "";
         }
 
-        //echo "<h1>$titulo</h1>";
-
-        /*$sql = "SELECT * FROM categorias ORDER BY categoria";
-        $resultado = $_conexion -> query($sql);
-        $array_categorias = [];
-
-        while($fila = $resultado -> fetch_assoc()) {
-            array_push($array_categorias, $fila["categoria"]);
-        }*/
-
         if($_SERVER["REQUEST_METHOD"] == "POST") {
             $categoria = $_POST["categoria"];
-            $descripcion = $_POST["descripcion"];
+            $tmp_descripcion = $_POST["descripcion"];
+
+            if($tmp_descripcion == '') {
+                $err_descripcion = "La descripcion es obligatoria ";
+            } else {
+                if(strlen($tmp_descripcion) < 2 || strlen($tmp_descripcion) > 255) {
+                    $err_descripcion = "La descripcion puede tener máximo 255 caracteres";
+                } else {
+                    $descripcion = $tmp_descripcion;
+                 
+                }
+            }
 
             $sql = "UPDATE categorias SET
                 categoria = '$categoria',
@@ -57,7 +57,8 @@
         <form class="col-6" action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label class="form-label">Categoría</label>
-                <input class="form-control" type="text" name="categoria" value="<?php echo $categoria ?>">
+                <input class="form-control" type="text" name="categoria" value="<?php echo $categoria ?>" disabled>
+                <input class="form-control" type="hidden" name="categoria" value="<?php echo $categoria; ?>">
             </div>
             <div class="mb-3">
                 <label class="form-label">Descripcion</label>
