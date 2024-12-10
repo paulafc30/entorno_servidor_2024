@@ -79,7 +79,7 @@
                         }
                     }
                 }else{
-                    $err_precio = "El precio debe ser un numero"; 
+                    $err_precio = "El precio debe ser un numero entero o decimal y llevar punto en vez de coma"; 
                 }
 
             }
@@ -119,6 +119,9 @@
 
             $nombre_imagen = NULL;
 
+            /* Utilizo este if para comprobar que las variables err no estén vacias, 
+            y eso significa que la validación ha ido bien y así se puede insertar a la 
+            base de datos sin que a ésta le lleguen datos erroneos*/
             if(!isset($err_nombre) && !isset($err_precio) && !isset($err_descripcion) && !isset($err_categoria) && !isset($err_stock)) {
                 $sql = "INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion) 
                         VALUES ('$nombre', $precio, '$categoria', $stock, '$nombre_imagen', '$descripcion')";
@@ -146,7 +149,7 @@
                 <?php if(isset($err_nombre)) echo "<span class='error'>$err_nombre</span>" ?>
             </div>
             <div class="mb-3">
-                <label class="form-label">Precio</label>
+                <label class="form-label">Precio (ejemplo: 9999.99)</label>
                 <input class="form-control" type="text" name="precio">
                 <?php if(isset($err_precio)) echo "<span class='error'>$err_precio</span>" ?>
             </div>

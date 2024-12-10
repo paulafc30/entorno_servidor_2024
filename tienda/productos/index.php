@@ -15,9 +15,10 @@
         if(isset($_SESSION["usuario"])){
             echo "<h4>Bienvenid@ ".$_SESSION["usuario"] . "</h4>";
         }else{
-            header("location: usuario/iniciar_sesion.php");
+            header("location: ../usuario/iniciar_sesion.php");
             exit;
         }
+        
     ?>
 
     <style>
@@ -72,7 +73,7 @@
         </thead>
         <tbody>
             <?php
-                while($fila = $resultado -> fetch_assoc()) {    // trata el resultado como un array asociativo
+                while($fila = $resultado -> fetch_assoc()) {   
                     echo "<tr>";
                     echo "<td>" . $fila["nombre"] . "</td>";
                     echo "<td>" . $fila["precio"] . "</td>";

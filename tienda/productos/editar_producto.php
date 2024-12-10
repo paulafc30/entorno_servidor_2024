@@ -13,12 +13,7 @@
         require('../util/depurar.php');
 
         session_start();
-        if(isset($_SESSION["usuario"])) {
-            echo "<h4>Bienvenid@ " . $_SESSION["usuario"] . "</h4>";
-        }else{
-            header("location: usuario/iniciar_sesion.php");
-            exit;
-        }
+    
     ?>
     <style>
         .error {
@@ -81,7 +76,7 @@
                 if(is_numeric($tmp_precio)){  
                     $patron = "/^[0-9]{1,4}(\.[0-9]{1,2})?$/";
                     if(!preg_match($patron, $tmp_precio)) {
-                        $err_precio = "El precio debe ser un numero de máximo 4 y 2 decimales. Ejemplo: 9999.99";
+                        $err_precio = "El precio debe ser un numero de máximo 4 digitos y 2 decimales. Ejemplo: 9999.99";
                     } else {
                         if ($tmp_precio > 9999.99 || $tmp_precio < 0) {
                             $err_precio = "El precio no puede ser mayor que 9999.99";
@@ -90,12 +85,10 @@
                         }
                     }
                 }else{
-                    $err_precio = "El precio debe ser un numero"; 
+                    $err_precio = "El precio debe ser un numero entero o decimal y llevar punto en vez de coma"; 
                 }
 
             }
-
-            //echo "<h1>Precio: " . $precio . "</h1><br>";
 
 
             if($tmp_descripcion == '') {
@@ -138,6 +131,7 @@
                 WHERE id_producto = $id_producto
             ";
             $_conexion -> query($sql);
+
         }
         ?>
         <form class="col-6" action="" method="post" enctype="multipart/form-data">
@@ -147,7 +141,7 @@
                 <?php if(isset($err_nombre)) echo "<span class='error'>$err_nombre</span>" ?>
             </div>
             <div class="mb-3">
-                <label class="form-label">Precio</label>
+                <label class="form-label">Precio (ejemplo: 9999.99)</label>
                 <input class="form-control" type="text" name="precio" value="<?php echo $precio ?>">
                 <?php if(isset($err_precio)) echo "<span class='error'>$err_precio</span>" ?>
             </div>
@@ -156,7 +150,7 @@
                 <select class="form-select" name="categoria">
                     <option value="<?php echo $categoria ?>" selected hidden><?php echo $categoria ?></option>
                     <?php
-                    foreach($categorias as $categoria) { ?>
+                    foreach($array_categorias as $categoria) { ?>
                         <option value="<?php echo $categoria ?>">
                             <?php echo $categoria ?>
                         </option>
