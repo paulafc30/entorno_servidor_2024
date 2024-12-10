@@ -14,7 +14,7 @@
         if(isset($_SESSION["usuario"])){
             echo "<h2>Bienvenid@ ".$_SESSION["usuario"] . "</h2>";
         }else{
-            header("location: usuario/iniciar_sesion.php");
+            header("location: ../usuario/iniciar_sesion.php");
             exit;
         }
     ?>
@@ -26,8 +26,7 @@
 </head>
 <body>
     <div class="container">
-    <h1>Tabla de categorias</h1>
-    <br>
+    <h1>Tabla de categorias</h1><br>
     <div class="mb-3">
         <a class="btn btn-success" href="nueva_categoria.php">Insertar nueva categoria</a>
         <a class="btn btn-secondary" href="../index.php">Volver a Inicio</a>
@@ -36,11 +35,9 @@
         if($_SERVER["REQUEST_METHOD"] == "POST") {
             $categoria = $_POST["categoria"];
 
-            // hay que borrar primero los productos relacionados
             $sql = "DELETE FROM productos WHERE categoria = '$categoria'";
             $_conexion->query($sql);
                
-            // aqui ya si puedo borrar la categoria
             $sql = "DELETE FROM categorias WHERE categoria = '$categoria'";
             $_conexion -> query($sql);
             echo "<h4>Se ha borrado $categoria</h4>";
@@ -63,7 +60,7 @@
         <tbody>
             
             <?php
-                while($fila = $resultado -> fetch_assoc()) {    // trata el resultado como un array asociativo
+                while($fila = $resultado -> fetch_assoc()) {    
                     echo "<tr>";
                     echo "<td>" . $fila["categoria"] . "</td>";
                     echo "<td>" . $fila["descripcion"] . "</td>";

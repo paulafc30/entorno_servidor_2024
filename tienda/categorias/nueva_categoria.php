@@ -57,7 +57,7 @@
                 $err_descripcion = "La descripcion es obligatoria ";
             } else {
                 if(strlen($tmp_descripcion) < 2 || strlen($tmp_descripcion) > 255) {
-                    $err_descripcion = "La descripcion puede tener máximo 255 caracteres";
+                    $err_descripcion = "La descripcion puede tener minimo 2 y máximo 255 caracteres";
                 } else {
                     $descripcion = $tmp_descripcion;
                  

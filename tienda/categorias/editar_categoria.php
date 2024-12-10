@@ -11,7 +11,14 @@
 
         require('../util/conexion.php');
         require('../util/depurar.php');
+
+        session_start();
     ?>
+     <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -39,7 +46,7 @@
                 $err_descripcion = "La descripcion es obligatoria ";
             } else {
                 if(strlen($tmp_descripcion) < 2 || strlen($tmp_descripcion) > 255) {
-                    $err_descripcion = "La descripcion puede tener máximo 255 caracteres";
+                    $err_descripcion = "La descripcion puede tener minimo 2 y máximo 255 caracteres";
                 } else {
                     $descripcion = $tmp_descripcion;
                  
@@ -63,6 +70,7 @@
             <div class="mb-3">
                 <label class="form-label">Descripcion</label>
                 <input class="form-control" type="text" name="descripcion" value="<?php echo $descripcion ?>">
+                <?php if(isset($err_descripcion)) echo "<span class='error'>$err_descripcion</span>" ?>
             </div>
             <div class="mb-3">
                 <input type="hidden" name="categoria" value="<?php echo $categoria ?>">
