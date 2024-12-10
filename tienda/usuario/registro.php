@@ -63,11 +63,11 @@
             }
 
 
+            // registrado?
+            // si
             if($usuario_valido && $contrasena_valida) {
 
                 $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
-                // registrado?
-                // si
 
                 $sql_insertar = "INSERT INTO usuarios (usuario, contrasena) VALUES ('$usuario', '$contrasena_cifrada')";
                  

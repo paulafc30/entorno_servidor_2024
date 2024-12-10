@@ -9,7 +9,15 @@
         error_reporting( E_ALL );
         ini_set("display_errors", 1 );  
 
-        require ('/var/www/html/tienda/util/conexion.php'); 
+        session_start();
+
+
+        if (isset($_SESSION["usuario"])) {
+            header("Location: ../index.php");
+            exit;
+        }
+
+        require('/var/www/html/tienda/util/conexion.php');
     ?>
      <style>
         .error {
@@ -36,7 +44,6 @@
                 $acceso_concedido = password_verify($contrasena, $datos_usuario["contrasena"]);
 
                 if($acceso_concedido){
-                    session_start();
                     $_SESSION["usuario"] = $usuario;
 
                     header("location: ../index.php");
