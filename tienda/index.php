@@ -9,20 +9,17 @@
         error_reporting( E_ALL );
         ini_set("display_errors", 1 );    
 
-        require('./usuario/iniciar_sesion.php');
         require('./util/conexion.php');
 
         session_start();
         if(isset($_SESSION["usuario"])){
-            echo "<h2>Bienvenid@ ".$_SESSION["usuario"] . "</h2>";
-        }else{
-            header("location: tienda/usuario/iniciar_sesion.php");
-            exit;
+            echo "<h4>Bienvenid@ ".$_SESSION["usuario"] . "</h4>";
         }
+    
     ?>
 </head>
 <body>
-    <br>
+    
     <ul class="nav justify-content-center">
     <li class="nav-item">
         <a class="nav-link active" aria-current="page" href="./index.php">Inicio</a>
@@ -38,16 +35,21 @@
 
     <div class="container">
     <!--<h1>Tabla de productos</h1>-->
-    <a class="btn btn-warning" href="usuario/cerrar_sesion.php">Cerrar sesión</a>
-    <?php
+
+    <?php 
+        if(!isset($_SESSION["usuario"])){
+            ?>
+                <a class="btn btn-info" href="usuario/iniciar_sesion.php">Iniciar sesión</a><br> 
+            <?php
+        }else{
+            ?>
+                <a class="btn btn-secondary" href="./usuario/cambiar_credenciales.php">Modificar Contraseña</a>
+                <a class="btn btn-warning" href="usuario/cerrar_sesion.php">Cerrar sesión</a><br>
+            <?php
+        }
+    
         if($_SERVER["REQUEST_METHOD"] == "POST") {
-            if($id_producto = $_POST["id_producto"]){
-                
-            }
-            echo "<h1>$id_producto</h1>";
-            //  borrar 
-            $sql = "DELETE FROM productos WHERE id_producto = $id_producto";
-            $_conexion -> query($sql);
+            $id_producto = $_POST["id_producto"];     
         }
 
         $sql = "SELECT * FROM productos";
@@ -62,13 +64,11 @@
                 <th>Stock</th>
                 <th>Imagen</th>
                 <th>Descripcion</th>
-                <th></th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
             <?php
-                while($fila = $resultado -> fetch_assoc()) {    // trata el resultado como un array asociativo
+                while($fila = $resultado -> fetch_assoc()) {  
                     echo "<tr>";
                     echo "<td>" . $fila["nombre"] . "</td>";
                     echo "<td>" . $fila["precio"] . "</td>";
@@ -77,16 +77,6 @@
                     echo "<td>"  ?> <img width="100" height="200" src="<?php echo $fila["imagen"] ?>"><?php  "</td>";
                     echo "<td>" . $fila["descripcion"] . "</td>";
                     ?>
-                        <td>
-                            <a class="btn btn-primary" 
-                            href="editar_producto.php?id_producto=<?php echo $fila["id_producto"] ?>">Editar</a>
-                        </td>
-                        <td>
-                            <form action="" method="post">
-                                <input type="hidden" name="id_" value="<?php echo $fila["id_producto"] ?>">
-                                <input class="btn btn-danger" type="submit" value="Borrar">
-                            </form>
-                        </td>
                     <?php
                     echo "</tr>";
                 }
